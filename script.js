@@ -41,13 +41,23 @@
         calDisplay.value = ''
     })
 
-    equalBtn.addEventListener('click', ()=>{
-        try{
-            calDisplay.value = eval(calDisplay.value.trim()) 
-        }catch (er){
-            alert('Введите корректно')
+    equalBtn.addEventListener('click', () => {
+        const expression = calDisplay.value.trim();
+
+        if (!/^[0-9+\-*/().\s]+$/.test(expression)) {
+            alert('Недопустимые символы');
+            return;
         }
-    })
+
+        try {
+            const Parser = window.exprEval.Parser;
+            const result = Parser.evaluate(expression);
+            calDisplay.value = result;
+        } catch (er) {
+            alert('Введите корректно');
+        }
+});
+
 
     deleteBtn.addEventListener('click', ()=>{
         calDisplay.value = calDisplay.value.slice(0, -1)
